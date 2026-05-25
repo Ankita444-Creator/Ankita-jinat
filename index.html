@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message For You</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        /* Custom Neon Pink Glow Effect */
+        .pink-glow {
+            box-shadow: 0 0 15px rgba(244, 63, 94, 0.6), 0 0 30px rgba(244, 63, 94, 0.4);
+            transition: all 0.3s ease-in-out;
+        }
+        .pink-glow:hover {
+            box-shadow: 0 0 25px rgba(244, 63, 94, 0.9), 0 0 50px rgba(244, 63, 94, 0.6);
+            transform: scale(1.05);
+        }
+        /* Text Glow for the insults */
+        .text-glow {
+            text-shadow: 0 0 20px rgba(239, 68, 68, 0.8), 0 0 40px rgba(239, 68, 68, 0.5);
+        }
+        /* Fade In and Out Animation Classes */
+        .fade-in-out {
+            animation: fadeInOut 2s forwards;
+        }
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: scale(0.8); filter: blur(10px); }
+            20% { opacity: 1; transform: scale(1); filter: blur(0px); }
+            80% { opacity: 1; transform: scale(1); filter: blur(0px); }
+            100% { opacity: 0; transform: scale(1.2); filter: blur(10px); }
+        }
+        /* Final Chaos Explosion Animation */
+        .explode {
+            animation: explodeAnim 1.5s forwards;
+        }
+        @keyframes explodeAnim {
+            0% { opacity: 0; transform: scale(0.3); }
+            50% { opacity: 1; transform: scale(1.1); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="bg-zinc-950 text-white min-h-screen flex flex-col items-center justify-center font-sans overflow-hidden select-none">
+
+    <div id="screen1" class="flex flex-col items-center justify-center space-y-6 max-w-sm px-4 text-center">
+        <div class="w-64 h-96 rounded-2xl overflow-hidden border-2 border-zinc-800 shadow-2xl">
+            <img src="https://i.ibb.co/b846ed/image.jpg" alt="Character" class="w-full h-full object-cover">
+        </div>
+        
+        <button id="startBtn" class="pink-glow bg-rose-500 hover:bg-rose-600 text-white font-bold py-4 px-8 rounded-full text-lg tracking-wide uppercase cursor-pointer focus:outline-none">
+            I want to say something
+        </button>
+    </div>
+
+    <div id="screen2" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-95">
+        <div id="slangContainer" class="text-glow text-red-500 text-5xl md:text-7xl font-black tracking-wider uppercase text-center hidden"></div>
+        
+        <div id="chaosGrid" class="hidden flex-col items-center justify-center space-y-4 md:space-y-6 text-center px-4">
+            <h1 class="text-red-600 text-4xl md:text-6xl font-extrabold tracking-tighter uppercase explode" style="animation-delay: 0s;">Bahenchod</h1>
+            <h1 class="text-rose-600 text-5xl md:text-7xl font-black tracking-wide uppercase explode" style="animation-delay: 0.3s;">Bokachoda</h1>
+            <h1 class="text-red-500 text-4xl md:text-6xl font-extrabold tracking-widest uppercase explode" style="animation-delay: 0.6s;">Lawrachoda</h1>
+            <h1 class="text-orange-600 text-6xl md:text-8xl font-black uppercase explode" style="animation-delay: 0.9s;">Chutiya</h1>
+        </div>
+
+        <div id="finalDemand" class="hidden text-center px-4">
+            <h2 class="text-zinc-400 text-xl md:text-2xl font-medium tracking-widest uppercase mb-4 animate-pulse">And lastly...</h2>
+            <h1 class="text-white text-4xl md:text-6xl font-black tracking-tight border-b-4 border-rose-500 pb-2 uppercase shadow-lg">
+                Meri Code wapas de
+            </h1>
+        </div>
+    </div>
+
+    <script>
+        const startBtn = document.getElementById('startBtn');
+        const screen1 = document.getElementById('screen1');
+        const screen2 = document.getElementById('screen2');
+        const slangContainer = document.getElementById('slangContainer');
+        const chaosGrid = document.getElementById('chaosGrid');
+        const finalDemand = document.getElementById('finalDemand');
+
+        const slangs = ["Bahenchod", "Bokachoda", "Lawrachoda", "Chutiya"];
+        const stepDuration = 2000; // 2 seconds per insult
+
+        startBtn.addEventListener('click', () => {
+            // Hide main screen, show canvas
+            screen1.classList.add('hidden');
+            screen2.classList.remove('hidden');
+            
+            // Start sequential insults
+            runInsultTimeline();
+        });
+
+        function runInsultTimeline() {
+            let currentStep = 0;
+
+            function showNextSlang() {
+                if (currentStep < slangs.length) {
+                    slangContainer.classList.remove('hidden');
+                    slangContainer.innerText = slangs[currentStep];
+                    
+                    // Reset and re-trigger CSS animation
+                    slangContainer.classList.remove('fade-in-out');
+                    void slangContainer.offsetWidth; // Force reflow
+                    slangContainer.classList.add('fade-in-out');
+
+                    currentStep++;
+                    setTimeout(showNextSlang, stepDuration);
+                } else {
+                    // Sequence done. Hide container, show total chaos
+                    slangContainer.classList.add('hidden');
+                    triggerChaosExplosion();
+                }
+            }
+
+            showNextSlang();
+        }
+
+        function triggerChaosExplosion() {
+            chaosGrid.classList.remove('hidden');
+            chaosGrid.classList.add('flex');
+
+            // Show the combined slangs for 3 seconds, then drop the final hammer
+            setTimeout(() => {
+                chaosGrid.classList.remove('flex');
+                chaosGrid.classList.add('hidden');
+                
+                // Show final demand
+                finalDemand.classList.remove('hidden');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
